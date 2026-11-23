@@ -1,0 +1,9 @@
+{
+  "name": "mako/storefront",
+  "description": "MAKO Engineered Performance Storefront",
+  "require": {
+    "php": "^8.2",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*"
+  }
+}
