@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Oct 28, 2026 at 10:57 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Host: 127.0.0.1
+-- Generation Time: Nov 23, 2026 at 12:28 PM
+-- Server version: 10.11.19-MariaDB
+-- PHP Version: 8.5.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ecommerce_db`
+-- Database: `changes`
 --
 
 -- --------------------------------------------------------
@@ -50,8 +50,39 @@ CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `total_amount` decimal(10,2) NOT NULL,
+  `shipping_address` text DEFAULT NULL,
+  `status` varchar(50) DEFAULT 'Pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `user_id`, `total_amount`, `shipping_address`, `status`, `created_at`) VALUES
+(1, 6, 94.99, 'fisgshhshshshs, 45 sprigg streat northpine bernadino heights, 7570', 'Pending', '2026-11-23 11:12:19');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `item_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`item_id`, `order_id`, `product_id`, `product_name`, `quantity`, `price`) VALUES
+(1, 1, 2, 'Cotton T-Shirt', 1, 19.99);
 
 -- --------------------------------------------------------
 
@@ -89,17 +120,20 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `role` varchar(20) DEFAULT 'customer'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `created_at`) VALUES
-(1, 'systemizedchris', 'christopher@capeneto.com', '$2y$10$7poIwS5uvgOmaTCtOQK1Ou6NZYfix5AM6//1lSu9oPKft26qy8uC2', '2026-08-24 10:58:33'),
-(2, 'admin', 'admin@gmail.com', '$2y$10$4y9F6fPqJb2e7H0kO9Y0u.zKx5M4S4a1n8d4a5m6i7n8123456789', '2026-10-28 09:44:52'),
-(3, 'kick', 'kick@gmail.com', '$2y$10$b2eWLxwSJQc3SF90cA7Jg.IFcrREbinqyZR/4sl0Zc98V6d96DtI6', '2026-10-28 09:46:03');
+INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `created_at`, `role`) VALUES
+(1, 'systemizedchris', 'christopher@capeneto.com', '$2y$10$7poIwS5uvgOmaTCtOQK1Ou6NZYfix5AM6//1lSu9oPKft26qy8uC2', '2026-08-24 10:58:33', 'customer'),
+(2, 'admin', 'admin@gmail.com', '$2y$10$4y9F6fPqJb2e7H0kO9Y0u.zKx5M4S4a1n8d4a5m6i7n8123456789', '2026-10-28 09:44:52', 'customer'),
+(3, 'kick', 'kick@gmail.com', '$2y$10$b2eWLxwSJQc3SF90cA7Jg.IFcrREbinqyZR/4sl0Zc98V6d96DtI6', '2026-10-28 09:46:03', 'customer'),
+(4, 'fiston', 'test@gmail.com', '$2y$12$Pifw9kTKLtWsfsDecVKcouKUzdq8IsU5JJ8PusSAq82lAqY9vkYV2', '2026-11-23 10:42:24', 'customer'),
+(6, 'fisgshhshshshs', 'christopher@eduvos.com', '$2y$12$3vE51yss9X9DQnzqNMbrCeMATVMEfF/JMXwtlqLgvBtFNALwQc.Ue', '2026-11-23 10:43:28', 'admin');
 
 -- --------------------------------------------------------
 
@@ -131,6 +165,12 @@ ALTER TABLE `categories`
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`item_id`);
 
 --
 -- Indexes for table `products`
@@ -168,7 +208,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -180,7 +226,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user_carts`

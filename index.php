@@ -103,7 +103,7 @@ if (isset($pdo) && $pdo instanceof PDO) {
     <?php if ($category === '' && $search === ''): ?>
     <section class="hero-video-section">
         <video class="hero-bg-video" autoplay muted loop playsinline>
-            <source src="assets/runner.mp4" type="video/mp4">
+            <source src="assets/running.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
 
